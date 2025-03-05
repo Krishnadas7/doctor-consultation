@@ -40,6 +40,7 @@ export class BookingsRepository {
               as: 'patient'
             }
           },
+
           {
             $lookup: {
               from: 'doctors',
@@ -49,6 +50,7 @@ export class BookingsRepository {
             }
           },
           {
+            
               $lookup: {
                   from: 'slots',
                   localField: 'slotsIdObject',
