@@ -36,6 +36,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
       const onlineUsers = [...this.connectedUsers.keys()];
       console.log(`User ${userId} (Type: ) connected with socket for chatt ${client.id}`, this.connectedUsers.keys());
       
+      
       this.server.emit('onlineUsers', { onlineUsers });      
       // try{
       //   // Extract token from handshake     
