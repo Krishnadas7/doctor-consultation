@@ -8,6 +8,7 @@ import { status, UserDocument } from "./schemas/users.schema";
 export class UsersRepository {
     constructor(@InjectModel('User') private readonly userModel: Model<UserDocument>) { }
 
+    
     async getUser(userId: string) {
         return await this.userModel.findById(userId);
     }
