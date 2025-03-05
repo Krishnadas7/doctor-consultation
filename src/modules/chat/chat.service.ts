@@ -10,6 +10,7 @@ import { use } from 'passport';
 
 @Injectable()
 export class ChatService {
+  
   constructor(
     @InjectModel(Message.name) private messageModel: Model<MessageDocument>,
     @Inject() private doctorRepo: DoctorRepository,
