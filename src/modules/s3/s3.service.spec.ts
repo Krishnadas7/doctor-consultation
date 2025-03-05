@@ -9,6 +9,7 @@ describe('Service', () => {
       providers: [Service],
     }).compile();
 
+    
     service = module.get<Service>(Service);
   });
 
