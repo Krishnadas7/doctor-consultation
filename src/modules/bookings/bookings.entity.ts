@@ -15,6 +15,7 @@ export enum BookingStatus {
 
 export type BookingsDocument = Bookings & Document;
 
+
 @Schema({ timestamps: true })
 export class Bookings {
     @Prop()
