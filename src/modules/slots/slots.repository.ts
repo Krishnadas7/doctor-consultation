@@ -88,7 +88,7 @@ export class SlotsRepository {
         }
     }
 
-    async deleteSlotsOlderThan3Months(currentTime: Date) {
+    async deleteSlotsOlderThan3Months(currentTime: Date):Promise<any>  {
         try {
             return await this.SlotModel.deleteMany({ StartTime: { $lt: currentTime } });            
         } catch (error) {

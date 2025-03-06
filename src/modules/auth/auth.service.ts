@@ -192,63 +192,78 @@ export class AuthService {
     }
    
     const otp: string = this.generateOtp();
+    try {
+      const mailInfo = await this.mailService.sendMail(
+        userDto.email,
+        'OTP for meetdoc',
+        `Your otp for registering in MeetDoc is ${otp}`,
+      );
+      if (mailInfo.rejected.length > 0) {
+        console.log("entered mail error", mailInfo)
+        throw new InternalServerErrorException('Some error while sending mail.');
+      }    
+      const storeOtp = new this.OtpModel({
+        email: userDto.email,
+        otp,
+        role: 'user',
+      });
+  
+      await storeOtp.save();
+      console.log(storeOtp,"otp saved")
+  
+      return {
+        mailSent: true,
+      };
+    } catch (error) {
+      console.log(error.message);
+      
+    }
     
-    const mailInfo = await this.mailService.sendMail(
-      userDto.email,
-      'OTP for meetdoc',
-      `Your otp for registering in MeetDoc is ${otp}`,
-    );
 
-    if (mailInfo.rejected.length > 0) {
-      console.log("entered mail error", mailInfo)
-      throw new InternalServerErrorException('Some error while sending mail.');
-    }    
+    
 
-    const storeOtp = new this.OtpModel({
-      email: userDto.email,
-      otp,
-      role: 'user',
-    });
-
-    await storeOtp.save();
-    console.log(storeOtp,"otp saved")
-
-    return {
-      mailSent: true,
-    };
+    
   }
 
   async verifyOtp(body: CreateUserDto, otp: string) {
-    const validOtp = await this.OtpModel.findOne({ email: body.email });   
+    try{
+      console.log('from veryfy otp',body);
+      
+      const validOtp = await this.OtpModel.findOne({ email: body.email });   
     
-    if (!validOtp) {
-      throw new UnauthorizedException('Otp expired, click resend.');
-    }
-    
-    if (validOtp.role !== 'user' || validOtp.otp !== otp) {
-      throw new UnauthorizedException('Wrong Otp');
-    }
-
-    const hashedPassword = await bcrypt.hash(body.password, 10);
-    body.password = hashedPassword;
-
-    const user = await this.usersService.create(body);
-    
-    const { password, ...userInfo } = user.toObject();
-    console.log("This is the userInfo after saving in database", userInfo, "------", user);
-
-    const payload = { id: user.id, name: user.name, email: user.email, role: 'user' };    
-    const accessToken = await this.generateAccessToken(payload);
-    const refreshToken = await this.generateRefreshToken(user.id, user.email);
-    const update = { refresh_token : refreshToken}
+      if (!validOtp) {
+        throw new UnauthorizedException('Otp expired, click resend.');
+      }
+      
+      if (validOtp.role !== 'user' || validOtp.otp !== otp) {
+        throw new UnauthorizedException('Wrong Otp');
+      }
   
-    await this.usersService.updateUser(user.id, update);
+      const hashedPassword = await bcrypt.hash(body.password, 10);
+      body.password = hashedPassword;
+  
+      const user = await this.usersService.create(body);
+      
+      const { password, ...userInfo } = user.toObject();
+      console.log("This is the userInfo after saving in database", userInfo, "------", user);
+  
+      const payload = { id: user.id, name: user.name, email: user.email, role: 'user' };    
+      const accessToken = await this.generateAccessToken(payload);
+      const refreshToken = await this.generateRefreshToken(user.id, user.email);
+      const update = { refresh_token : refreshToken}
     
-    return {
-      user: userInfo,
-      accessToken: accessToken,
-      refreshToken: refreshToken
-    };
+      await this.usersService.updateUser(user.id, update);
+      
+      return {
+        user: userInfo,
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      };
+    }catch(error){
+      console.log(error);
+      
+    }
+   
   }
 
   async resendOtp(email: string, role: string) {

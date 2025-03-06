@@ -14,8 +14,8 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       username: configService.get<string>('REDIS_USERNAME'),
       password: configService.get<string>('REDIS_PASSWORD'),
       socket: {
-        host: 'redis-13870.crce179.ap-south-1-1.ec2.redns.redis-cloud.com',
-        port: 13870,
+        host: 'redis-12619.c83.us-east-1-2.ec2.redns.redis-cloud.com',
+        port: 12619,
       },
     });
 

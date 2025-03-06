@@ -10,8 +10,6 @@ import { RedisService } from '../redis/redis.service';
 import { UsersRepository } from '../users/users.repository';
 import { DoctorRepository } from '../doctors/doctor.repository';
 import { BookingsRepository } from '../bookings/bookings.repository';
-import { SubscriptionRepository } from '../subscription/subscription.repository';
-import { CreateSubscriptionDto } from '../subscription/dto/create-subscription.dto';
 
 
 @Injectable()
@@ -24,7 +22,6 @@ export class AdminService {
     private userRepo: UsersRepository,
     private doctorRepo: DoctorRepository,
     private bookingsRepo: BookingsRepository,
-    private subscriptionRepo: SubscriptionRepository
   ) { }
 
   
@@ -111,36 +108,9 @@ export class AdminService {
     const doctorResults = await this.doctorRepo.getMonthlyData();
     const appointmentResults = await this.bookingsRepo.getMonthlyData();
     console.log("This is the results after fetching monthly data", userResults, doctorResults, appointmentResults);
-    
-  
-    // Extract data from the results
-    // const usersData = results[0].users;
-    // const totalUsers = results[0].totalUsers[0]?.total || 0;
-    // const doctorsData = results[0].doctors;
-    // const totalDoctors = results[0].totalDoctors[0]?.total || 0;
-    // const appointmentsData = results[0].appointments;
-    // const totalAppointments = results[0].totalAppointments[0]?.total || 0;
-  
-    // // Convert aggregation results to a map for easy lookup
-    // const usersMap = new Map(usersData.map((item) => [item._id, item.count]));
-    // const doctorsMap = new Map(doctorsData.map((item) => [item._id, item.count]));
-    // const appointmentsMap = new Map(appointmentsData.map((item) => [item._id, item.count]));
-  
-    // // Build the final monthly data array
-    // const monthlyData = months.map((month, index) => ({
-    //   name: month,
-    //   users: usersMap.get(index + 1) || 0,
-    //   doctors: doctorsMap.get(index + 1) || 0,
-    //   appointments: appointmentsMap.get(index + 1) || 0,
-    // }));
   
     return {
-      // monthlyData,
-      // totals: {
-      //   totalUsers,
-      //   totalDoctors,
-      //   totalAppointments,
-      // },
+      
       userResults,
       doctorResults,
       appointmentResults
@@ -165,35 +135,5 @@ export class AdminService {
     }
   }
 
-  async convertDate() {
-    await this.userRepo.convertDate();
-  }
-
-  async getSubscriptions() {
-    const schemes = await this.subscriptionRepo.getSubscriptions();
-    return {
-      schemes
-    }
-  }
-
-  async getDisabledSubscriptions() {
-    const schemes = await this.subscriptionRepo.getDisabledSubscriptions();
-    return {
-      schemes
-    }
-  }
-
-  async createSubscription(body: CreateSubscriptionDto) {
-    const scheme = await this.subscriptionRepo.createSubscription(body);
-    return {
-      scheme
-    }
-  }
-
-  async deleteSubscription(id: string) {
-    const scheme = await this.subscriptionRepo.deleteSubscription(id);
-    return {
-      scheme
-    }
-  }
+  
 }

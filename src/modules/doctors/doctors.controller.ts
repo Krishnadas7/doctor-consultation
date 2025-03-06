@@ -8,7 +8,7 @@ import { CreatePrescriptionDto } from '../prescription/dto/create-prescription.d
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { UpdatePrescriptionDto } from '../prescription/dto/update-prescription.dto';
 
-@UseGuards(AuthGuard('doctor-access-jwt'))
+// @UseGuards(AuthGuard('doctor-access-jwt'))
 @Controller('doctors')
 export class DoctorsController {
     constructor(

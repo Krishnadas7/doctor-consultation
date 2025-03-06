@@ -49,14 +49,18 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() body: CreateUserDto) {
+    console.log("from -===body",body);
+    
     return this.authService.register(body);
   }
 
   @Post('verify_otp')
-  async verify(@Body() body, @Res() res) {    
+  async verify(@Body() body, @Res() res) {  
+    console.log('body from very',body);
+      
     const { otp, ...user } = body; 
     console.log(user,"This is user");
-    const { refreshToken, ...data } = await this.authService.verifyOtp(user.data, otp);
+    const { refreshToken, ...data } = await this.authService.verifyOtp(user, otp);
     console.log("recieved tokens ", refreshToken, data)
     res.cookie('refreshToken', refreshToken, { httpOnly: true , path: '/auth/refresh'});
     res.json(data) ;
@@ -111,7 +115,7 @@ export class AuthController {
   async verifyOtp(@Body() body, @Res({passthrough:true}) res) {
     const { otp, ...doctor } = body;    
     console.log(otp,doctor)
-    return this.authService.doctorVerifyOtp(doctor.data, otp, res);
+    return this.authService.doctorVerifyOtp(doctor, otp, res);
   }
 
   @Post('doctor/login')  

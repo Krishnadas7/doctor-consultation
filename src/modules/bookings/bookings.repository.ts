@@ -40,7 +40,6 @@ export class BookingsRepository {
               as: 'patient'
             }
           },
-
           {
             $lookup: {
               from: 'doctors',
@@ -50,7 +49,6 @@ export class BookingsRepository {
             }
           },
           {
-            
               $lookup: {
                   from: 'slots',
                   localField: 'slotsIdObject',
@@ -184,7 +182,7 @@ export class BookingsRepository {
     return bookings;
   }
 
-  async deleteBookingById(bookingId: string) {
+  async deleteBookingById(bookingId: string):Promise<any> {
       try {
           const deleteStatus = await this.BookingModel.deleteOne({ _id: bookingId });
           return deleteStatus;

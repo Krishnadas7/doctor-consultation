@@ -12,16 +12,10 @@ async function bootstrap() {
     bodyParser: false,
   });
   app.enableCors({
-    origin: ['https://meetdoc.harshsurendran.online', 'http://localhost:5173'],
+    origin: "*",
     credentials: true
   });
-  app.use(
-    '/webhook/stripe',
-    express.raw({ type: 'application/json' }), (req, res, next) => {
-      req.rawBody = req.body;
-      next();
-    }
-  );
+  
   app.use(express.json({ limit: '50mb' })); 
   app.use(express.urlencoded({ extended: true, limit: '50mb' }));
   app.use(cookieParser());
