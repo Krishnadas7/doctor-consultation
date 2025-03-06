@@ -9,7 +9,6 @@ import { MongooseConfigModule } from './dbconfig/mongoose.config';
 import { LoggerMiddleware } from './common/middlewares/logger/logger.middleware';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { SlotsModule } from './modules/slots/slots.module';
-import { TasksModule } from './modules/tasks/tasks.module';
 import { PrescriptionModule } from './modules/prescription/prescription.module';
 import { ReviewModule } from './modules/review/review.module';
 
@@ -25,7 +24,6 @@ import { ReviewModule } from './modules/review/review.module';
     MailModule,
     BookingsModule,
     SlotsModule,
-    TasksModule,
     PrescriptionModule,
     ReviewModule,
   ],

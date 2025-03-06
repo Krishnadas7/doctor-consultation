@@ -7,7 +7,7 @@ import { UpdateSlotDto } from '../slots/dto/update-slot.dto';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { CreatePatientDto } from './interface/createPatientdto';
 
-@UseGuards(AuthGuard("jwt"))
+// @UseGuards(AuthGuard("jwt"))
 @Controller('users')    
 export class UsersController {
     constructor(private userService: UsersService) { }
@@ -101,10 +101,6 @@ export class UsersController {
         return await this.userService.updateSlots(slotId, body);
     }
 
-    @Get("payment/:bookingId")
-    async getPaymentDetails(@Param('bookingId') bookingId: string) {
-        return await this.userService.getBookingDetails(bookingId);
-    }
 
     @Get("doctors/landingpage")
     async getDoctorsForLanding() {
